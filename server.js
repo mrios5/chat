@@ -13,6 +13,15 @@ io.on('connection', socket =>{
     console.log('Nueva conexion...');
 
     socket.emit('message',"Bienvenido al chat")
+    //Mensaje en broadcast a todos menos el nuevo
+    socket.broadcast.emit('message','an user just drop into the chat!')
+
+
+
+    socket.on('chatMessage', msg=>{
+        console.log(msg);
+        io.emit('message', msg);
+    });
 });
 
 
