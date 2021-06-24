@@ -7,8 +7,10 @@ const {
     userJoin, 
     getCurrentUser, 
     userLeave, 
-    getRoomUsers
+    getRoomUsers,
+    theusers
 } = require('./utils/users');
+const { json } = require('express');
 
 const app = express();
 const server = http.createServer(app);
@@ -25,13 +27,24 @@ io.on('connection', socket => {
         socket.join(user.room)
 
     // Mensaje al usuario que se conecta
-    socket.emit('message', formatMessage(botName, 'Bienvenido al Chat!!'));
+    socket.emit('message', formatMessage(botName, 'Bienvenido al Chat gg!!'));
     
     // Broadcast message, except the user conected
     socket.broadcast.to(user.room).emit('message', formatMessage(botName, `${user.username} se ha conectado`));
 
-    io.to(user.room).emit('roomUsers', { room: user.room, users: getRoomUsers(user.room)});
+    socket.to(user.room).emit('roomUsers', { room: user.room, users: getRoomUsers(user.room)});
+
+    //practica examen
+
+    //var persona = {room: user.room, users: getRoomUsers(user.room)}
+    
+    io.to(user.room).emit('message', formatMessage(botName, `los usuarios conectados son: ${getRoomUsers(user.room).map((user) => { return user.username})} `))
+    cantidad = getRoomUsers(user.room).length
+    io.to(user.room).emit('message', formatMessage(botName, `La cantidad de usuarios son: ${cantidad} `))
+
     });
+
+    
 
     socket.on('chatMessage', msg=>{
         const user = getCurrentUser(socket.id);
@@ -49,6 +62,8 @@ io.on('connection', socket => {
             io.to(user.room).emit('roomUsers', { room: user.room, users: getRoomUsers(user.room)});
         }
     });
+
+    
 });
 
 const PORT = 3000 || process.env.PORT;

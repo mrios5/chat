@@ -25,9 +25,19 @@ function getRoomUsers(room){
     return users.filter(user => user.room === room )
 }
 
+function theusers(room){
+    const lista = []
+
+    lista.push(user);
+
+    return user;
+
+}
+
 module.exports ={
     userJoin,
     getCurrentUser,
     userLeave,
-    getRoomUsers
+    getRoomUsers,
+    theusers
 };

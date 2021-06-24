@@ -10,6 +10,16 @@ const {username,room}= Qs.parse(location.search,{
 
 const socket = io();
 
+
+
+socket.on('messageUsers', message =>{
+outputRoomName(room);
+outputUsers(users);
+});
+
+
+
+
 // unirse a la sala
 socket.emit('joinRoom', {username, room});
 
